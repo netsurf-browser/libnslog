@@ -63,7 +63,7 @@ static nslog_filter_t *nslog__active_filter = NULL;
 nslog_error nslog_filter_category_new(const char *catname,
 				      nslog_filter_t **filter)
 {
-	nslog_filter_t *ret = calloc(sizeof(*ret), 1);
+	nslog_filter_t *ret = calloc(1, sizeof(*ret));
 	if (ret == NULL)
 		return NSLOG_NO_MEMORY;
 	ret->kind = NSLFK_CATEGORY;
@@ -81,7 +81,7 @@ nslog_error nslog_filter_category_new(const char *catname,
 nslog_error nslog_filter_level_new(nslog_level level,
 				   nslog_filter_t **filter)
 {
-	nslog_filter_t *ret = calloc(sizeof(*ret), 1);
+	nslog_filter_t *ret = calloc(1, sizeof(*ret));
 	if (ret == NULL)
 		return NSLOG_NO_MEMORY;
 	ret->kind = NSLFK_LEVEL;
@@ -94,7 +94,7 @@ nslog_error nslog_filter_level_new(nslog_level level,
 nslog_error nslog_filter_filename_new(const char *filename,
 				      nslog_filter_t **filter)
 {
-	nslog_filter_t *ret = calloc(sizeof(*ret), 1);
+	nslog_filter_t *ret = calloc(1, sizeof(*ret));
 	if (ret == NULL)
 		return NSLOG_NO_MEMORY;
 	ret->kind = NSLFK_FILENAME;
@@ -112,7 +112,7 @@ nslog_error nslog_filter_filename_new(const char *filename,
 nslog_error nslog_filter_dirname_new(const char *dirname,
 				     nslog_filter_t **filter)
 {
-	nslog_filter_t *ret = calloc(sizeof(*ret), 1);
+	nslog_filter_t *ret = calloc(1, sizeof(*ret));
 	if (ret == NULL)
 		return NSLOG_NO_MEMORY;
 	ret->kind = NSLFK_DIRNAME;
@@ -130,7 +130,7 @@ nslog_error nslog_filter_dirname_new(const char *dirname,
 nslog_error nslog_filter_funcname_new(const char *funcname,
 				      nslog_filter_t **filter)
 {
-	nslog_filter_t *ret = calloc(sizeof(*ret), 1);
+	nslog_filter_t *ret = calloc(1, sizeof(*ret));
 	if (ret == NULL)
 		return NSLOG_NO_MEMORY;
 	ret->kind = NSLFK_FUNCNAME;
@@ -150,7 +150,7 @@ nslog_error nslog_filter_and_new(nslog_filter_t *left,
 				 nslog_filter_t *right,
 				 nslog_filter_t **filter)
 {
-	nslog_filter_t *ret = calloc(sizeof(*ret), 1);
+	nslog_filter_t *ret = calloc(1, sizeof(*ret));
 	if (ret == NULL)
 		return NSLOG_NO_MEMORY;
 	ret->kind = NSLFK_AND;
@@ -165,7 +165,7 @@ nslog_error nslog_filter_or_new(nslog_filter_t *left,
 				nslog_filter_t *right,
 				nslog_filter_t **filter)
 {
-	nslog_filter_t *ret = calloc(sizeof(*ret), 1);
+	nslog_filter_t *ret = calloc(1, sizeof(*ret));
 	if (ret == NULL)
 		return NSLOG_NO_MEMORY;
 	ret->kind = NSLFK_OR;
@@ -180,7 +180,7 @@ nslog_error nslog_filter_xor_new(nslog_filter_t *left,
 				 nslog_filter_t *right,
 				 nslog_filter_t **filter)
 {
-	nslog_filter_t *ret = calloc(sizeof(*ret), 1);
+	nslog_filter_t *ret = calloc(1, sizeof(*ret));
 	if (ret == NULL)
 		return NSLOG_NO_MEMORY;
 	ret->kind = NSLFK_XOR;
@@ -194,7 +194,7 @@ nslog_error nslog_filter_xor_new(nslog_filter_t *left,
 nslog_error nslog_filter_not_new(nslog_filter_t *input,
 				 nslog_filter_t **filter)
 {
-	nslog_filter_t *ret = calloc(sizeof(*ret), 1);
+	nslog_filter_t *ret = calloc(1, sizeof(*ret));
 	if (ret == NULL)
 		return NSLOG_NO_MEMORY;
 	ret->kind = NSLFK_NOT;
@@ -327,25 +327,25 @@ char *nslog_filter_sprintf(nslog_filter_t *filter)
 	char *ret = NULL;
 	switch (filter->kind) {
 	case NSLFK_CATEGORY:
-		ret = calloc(filter->params.str.len + 5, 1);
+		ret = calloc(1, filter->params.str.len + 5);
 		sprintf(ret, "cat:%s", filter->params.str.ptr);
 		break;
 	case NSLFK_LEVEL: {
 		const char *lvl = nslog_level_name(filter->params.level);
-		ret = calloc(strlen(lvl) + 5, 1);
+		ret = calloc(1, strlen(lvl) + 5);
 		sprintf(ret, "lvl:%s", lvl);
 		break;
 	}
 	case NSLFK_FILENAME:
-		ret = calloc(filter->params.str.len + 6, 1);
+		ret = calloc(1, filter->params.str.len + 6);
 		sprintf(ret, "file:%s", filter->params.str.ptr);
 		break;
 	case NSLFK_DIRNAME:
-		ret = calloc(filter->params.str.len + 5, 1);
+		ret = calloc(1, filter->params.str.len + 5);
 		sprintf(ret, "dir:%s", filter->params.str.ptr);
 		break;
 	case NSLFK_FUNCNAME:
-		ret = calloc(filter->params.str.len + 6, 1);
+		ret = calloc(1, filter->params.str.len + 6);
 		sprintf(ret, "func:%s", filter->params.str.ptr);
 		break;
 	case NSLFK_AND:
@@ -356,7 +356,7 @@ char *nslog_filter_sprintf(nslog_filter_t *filter)
 		const char *op =
 			(filter->kind == NSLFK_AND) ? "&&" :
 			(filter->kind == NSLFK_OR) ? "||" : "^";
-		ret = calloc(strlen(left) + strlen(right) + 7, 1);
+		ret = calloc(1, strlen(left) + strlen(right) + 7);
 		sprintf(ret, "(%s %s %s)", left, op, right);
 		free(left);
 		free(right);
@@ -364,7 +364,7 @@ char *nslog_filter_sprintf(nslog_filter_t *filter)
 	}
 	case NSLFK_NOT: {
 		char *input = nslog_filter_sprintf(filter->params.unary_input);
-		ret = calloc(strlen(input) + 2, 1);
+		ret = calloc(1, strlen(input) + 2);
 		sprintf(ret, "!%s", input);
 		free(input);
 		break;

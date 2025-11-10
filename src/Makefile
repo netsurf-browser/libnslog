@@ -32,7 +32,7 @@ else
       BISON_DEFINES = --define=api.prefix=$(*F)_
     endif
   else
-    BISON_DEFINES = --define=api.prefix={$(*F)_}
+    BISON_DEFINES = --define=api.prefix={$(*F)_} --force-define=api.pure
   endif
 endif
 
