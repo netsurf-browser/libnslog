@@ -10,6 +10,7 @@
 
 #include "nslog/nslog.h"
 #include <assert.h>
+#include <limits.h>
 
 #include "filter-parser.h"
 #include "filter-lexer.h"
