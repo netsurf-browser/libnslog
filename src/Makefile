@@ -16,23 +16,23 @@ $(BUILDDIR)/%-lexer.c: $(BUILDDIR)/%-lexer.inc
 	$(Q)echo "#include \"$(notdir $<)\"" >> $@
 	$(Q)echo "#endif" >> $@
 
+# Minimum supported bison is version 2.7 (required for api.pure=full transition)
 # Bison 3.0 and later require api.prefix in curly braces
 # Bison 2.6 and later require api.prefix
-# Bison 2.5 and earlier require name-prefix switch
 bisonvsn := $(word 4,$(shell $(BISON) --version))
 bisonmaj := $(word 1,$(subst ., ,$(bisonvsn)))
 bisonmin := $(word 2,$(subst ., ,$(bisonvsn)))
 ifeq ($(bisonmaj),1)
-  BISON_DEFINES = --name-prefix=$(*F)_
+  $(error Need Bison 2.7 or later)
 else
   ifeq ($(bisonmaj),2)
-    ifneq ($(findstring $(bisonmin),"0 1 2 3 4 5"),)
-      BISON_DEFINES = --name-prefix=$(*F)_
+    ifneq ($(findstring $(bisonmin),"0 1 2 3 4 5 6"),)
+      $(error Need Bison 2.7 or later)
     else
       BISON_DEFINES = --define=api.prefix=$(*F)_
     endif
   else
-    BISON_DEFINES = --define=api.prefix={$(*F)_} --force-define=api.pure
+    BISON_DEFINES = --define=api.prefix={$(*F)_}
   endif
 endif
 
