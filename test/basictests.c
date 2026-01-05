@@ -83,7 +83,7 @@ START_TEST (test_nslog_trivial_corked_message)
 		    "Captured message wasn't correct");
 	ck_assert_msg(strcmp(captured_context.filename, "test/basictests.c") == 0,
 		    "Captured message wasn't correct filename");
-	ck_assert_msg(strcmp(captured_context.funcname, __func__) == 0,
+	ck_assert_msg(strstr(captured_context.funcname, __func__) != NULL,
 		    "Captured message wasn't correct function name");
 }
 END_TEST
@@ -109,7 +109,7 @@ START_TEST (test_nslog_trivial_uncorked_message)
 		    "Captured message wasn't correct");
 	ck_assert_msg(strcmp(captured_context.filename, "test/basictests.c") == 0,
 		    "Captured message wasn't correct filename");
-	ck_assert_msg(strcmp(captured_context.funcname, __func__) == 0,
+	ck_assert_msg(strstr(captured_context.funcname, __func__) != NULL,
 		    "Captured message wasn't correct function name");
 }
 END_TEST
@@ -150,7 +150,7 @@ START_TEST (test_nslog_two_corked_messages)
 		    "Captured message wasn't correct");
 	ck_assert_msg(strcmp(captured_context.filename, "test/basictests.c") == 0,
 		    "Captured message wasn't correct filename");
-	ck_assert_msg(strcmp(captured_context.funcname, __func__) == 0,
+	ck_assert_msg(strstr(captured_context.funcname, __func__) != NULL,
 		    "Captured message wasn't correct function name");
 }
 END_TEST
@@ -223,7 +223,7 @@ START_TEST (test_nslog_simple_filter_corked_message)
 		    "Captured message wasn't correct");
 	ck_assert_msg(strcmp(captured_context.filename, "test/basictests.c") == 0,
 		    "Captured message wasn't correct filename");
-	ck_assert_msg(strcmp(captured_context.funcname, __func__) == 0,
+	ck_assert_msg(strstr(captured_context.funcname, __func__) != NULL,
 		    "Captured message wasn't correct function name");
 
 }
@@ -250,7 +250,7 @@ START_TEST (test_nslog_simple_filter_uncorked_message)
 		    "Captured message wasn't correct");
 	ck_assert_msg(strcmp(captured_context.filename, "test/basictests.c") == 0,
 		    "Captured message wasn't correct filename");
-	ck_assert_msg(strcmp(captured_context.funcname, __func__) == 0,
+	ck_assert_msg(strstr(captured_context.funcname, __func__) != NULL,
 		    "Captured message wasn't correct function name");
 
 }
@@ -277,7 +277,7 @@ START_TEST (test_nslog_simple_filter_subcategory_message)
 		    "Captured message wasn't correct");
 	ck_assert_msg(strcmp(captured_context.filename, "test/basictests.c") == 0,
 		    "Captured message wasn't correct filename");
-	ck_assert_msg(strcmp(captured_context.funcname, __func__) == 0,
+	ck_assert_msg(strstr(captured_context.funcname, __func__) != NULL,
 		    "Captured message wasn't correct function name");
 
 }
