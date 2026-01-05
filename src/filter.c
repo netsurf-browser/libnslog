@@ -292,8 +292,19 @@ static bool _nslog__filter_matches(nslog_entry_context_t *ctx,
 			return true;
 		return false;
 	case NSLFK_FUNCNAME:
+#if (defined(__clang__))
+		/* With clang: __PRETTY_FUNCTION__: `int main(void)`
+		 *
+		 * So we do a substring match, which is slow but function
+		 * filtering is done rarely and only for debugging purposes.
+		 */
+		return (filter->params.str.len <= ctx->funcnamelen &&
+			strstr(ctx->funcname, filter->params.str.ptr) != NULL);
+#else
+		/* With gcc: __PRETTY_FUNCTION__: `main` */
 		return (filter->params.str.len == ctx->funcnamelen &&
 			strcmp(ctx->funcname, filter->params.str.ptr) == 0);
+#endif
 	case NSLFK_AND:
 		return (_nslog__filter_matches(ctx, filter->params.binary.input1)
 			&&
