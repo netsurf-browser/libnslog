@@ -165,7 +165,7 @@ static void __nslog__deliver_corked_entry(nslog_entry_context_t *ctx,
 	va_end(args);
 }
 
-nslog_error nslog_uncork()
+nslog_error nslog_uncork(void)
 {
 	if (nslog__corked) {
 		while (nslog__cork_chain != NULL) {
@@ -186,7 +186,7 @@ nslog_error nslog_uncork()
 	}
 }
 
-void nslog_cleanup()
+void nslog_cleanup(void)
 {
 	nslog_category_t *cat = nslog__all_categories;
 	(void)nslog_uncork();
