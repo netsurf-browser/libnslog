@@ -336,28 +336,34 @@ bool nslog__filter_matches(nslog_entry_context_t *ctx)
 char *nslog_filter_sprintf(nslog_filter_t *filter)
 {
 	char *ret = NULL;
+	size_t retlen = 0;
 	switch (filter->kind) {
 	case NSLFK_CATEGORY:
-		ret = calloc(1, filter->params.str.len + 5);
-		sprintf(ret, "cat:%s", filter->params.str.ptr);
+		retlen = filter->params.str.len + 5;
+		ret = calloc(1, retlen);
+		snprintf(ret, retlen, "cat:%s", filter->params.str.ptr);
 		break;
 	case NSLFK_LEVEL: {
 		const char *lvl = nslog_level_name(filter->params.level);
-		ret = calloc(1, strlen(lvl) + 5);
-		sprintf(ret, "lvl:%s", lvl);
+		retlen = strlen(lvl) + 5;
+		ret = calloc(1, retlen);
+		snprintf(ret, retlen, "lvl:%s", lvl);
 		break;
 	}
 	case NSLFK_FILENAME:
-		ret = calloc(1, filter->params.str.len + 6);
-		sprintf(ret, "file:%s", filter->params.str.ptr);
+		retlen = filter->params.str.len + 6;
+		ret = calloc(1, retlen);
+		snprintf(ret, retlen, "file:%s", filter->params.str.ptr);
 		break;
 	case NSLFK_DIRNAME:
-		ret = calloc(1, filter->params.str.len + 5);
-		sprintf(ret, "dir:%s", filter->params.str.ptr);
+		retlen = filter->params.str.len + 5;
+		ret = calloc(1, retlen);
+		snprintf(ret, retlen, "dir:%s", filter->params.str.ptr);
 		break;
 	case NSLFK_FUNCNAME:
-		ret = calloc(1, filter->params.str.len + 6);
-		sprintf(ret, "func:%s", filter->params.str.ptr);
+		retlen = filter->params.str.len + 6;
+		ret = calloc(1, retlen);
+		snprintf(ret, retlen, "func:%s", filter->params.str.ptr);
 		break;
 	case NSLFK_AND:
 	case NSLFK_OR:
@@ -367,16 +373,18 @@ char *nslog_filter_sprintf(nslog_filter_t *filter)
 		const char *op =
 			(filter->kind == NSLFK_AND) ? "&&" :
 			(filter->kind == NSLFK_OR) ? "||" : "^";
-		ret = calloc(1, strlen(left) + strlen(right) + 7);
-		sprintf(ret, "(%s %s %s)", left, op, right);
+		retlen = strlen(left) + strlen(right) + 7;
+		ret = calloc(1, retlen);
+		snprintf(ret, retlen,"(%s %s %s)", left, op, right);
 		free(left);
 		free(right);
 		break;
 	}
 	case NSLFK_NOT: {
 		char *input = nslog_filter_sprintf(filter->params.unary_input);
-		ret = calloc(1, strlen(input) + 2);
-		sprintf(ret, "!%s", input);
+		retlen = strlen(input) + 2;
+		ret = calloc(1, retlen);
+		snprintf(ret, retlen, "!%s", input);
 		free(input);
 		break;
 	}
